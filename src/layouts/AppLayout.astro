@@ -16,7 +16,7 @@ const { title = 'RollToPlay' } = Astro.props;
     <meta name="description" content="Elige tu próximo juego al azar con animación shuffle. Multi-plataforma, sin cuentas, sin fricción." />
     <title>{title}</title>
     <link rel="icon" type="image/svg+xml" href="/roll-to-play/favicon.svg" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://media.rawg.io; connect-src 'self' https://api.rawg.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self';" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://media.rawg.io; connect-src 'self' https://api.rawg.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline';" />
   </head>
   <body class="min-h-screen bg-[var(--color-bg-deep)] text-[var(--color-text-primary)]">
     <slot />
