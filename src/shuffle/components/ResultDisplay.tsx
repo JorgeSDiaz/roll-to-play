@@ -18,12 +18,7 @@ export default function ResultDisplay() {
         }}
       >
         {game.coverUrl ? (
-          <img
-            src={game.coverUrl}
-            alt={game.name}
-            class="w-full object-cover"
-            style={{ aspectRatio: '3/4' }}
-          />
+          <img src={game.coverUrl} alt={game.name} class="w-full h-auto block" />
         ) : (
           <div
             class="w-full flex items-center justify-center bg-[var(--color-bg-elevated)]"
