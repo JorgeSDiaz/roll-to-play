@@ -3,6 +3,7 @@ import { Gamepad2 } from 'lucide-preact';
 import { shufflePhaseSignal, currentDisplayedGameSignal } from '../shuffle.signals';
 import { gameListSignal } from '../../game-list/game-list.signals';
 import type { Game } from '../../shared/types/game.types';
+import GameCard from '../../shared/ui/GameCard';
 
 export default function ShuffleArea() {
   const phase = shufflePhaseSignal.value;
@@ -40,10 +41,20 @@ export default function ShuffleArea() {
     }
   }, [currentGame, phase]);
 
-  // Estado idle — grid de portadas de la lista
+  // Estado idle — pila de portadas
   if (phase === 'idle') {
+    const IDLE_W = 320;
+    const IDLE_H = 200;
+    const IDLE_OFFSET = 10;
+    // Mostrar hasta 5 cartas en la pila; el resto no cambia el visual
+    // Último agregado al frente → invertir y tomar los primeros 5
+    const visibleGames = [...games].reverse().slice(0, 5);
+    const n = visibleGames.length;
+    // El contenedor crece hacia arriba: altura = carta + offsets de las cartas traseras
+    const stackH = IDLE_H + IDLE_OFFSET * Math.max(n - 1, 0);
+
     return (
-      <div class="flex flex-col items-center gap-6 w-full max-w-sm">
+      <div class="flex flex-col items-center gap-6">
         {games.length === 0 ? (
           <div class="flex flex-col items-center gap-3 py-12 text-center">
             <Gamepad2 size={48} class="text-[var(--color-text-muted)] opacity-40" />
@@ -53,26 +64,33 @@ export default function ShuffleArea() {
           </div>
         ) : (
           <>
-            <div class="grid grid-cols-3 gap-2 opacity-60">
-              {games.slice(0, 6).map((game) => (
-                <div
-                  key={game.id}
-                  class="aspect-[3/4] rounded-lg overflow-hidden bg-[var(--color-bg-elevated)] border border-[var(--color-border-subtle)]"
-                >
-                  {game.coverUrl ? (
-                    <img
-                      src={game.coverUrl}
-                      alt={game.name}
-                      class="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div class="w-full h-full flex items-center justify-center">
-                      <Gamepad2 size={24} class="text-[var(--color-text-muted)]" />
-                    </div>
-                  )}
-                </div>
-              ))}
+            {/* Pila apilada: i=0 es la carta del frente (último agregado) */}
+            <div
+              style={{
+                position: 'relative',
+                width: `${IDLE_W}px`,
+                height: `${stackH}px`,
+                opacity: 0.85,
+              }}
+            >
+              {visibleGames.map((game, i) => {
+                // i=0 → frente (abajo del contenedor), i=n-1 → más atrás (arriba)
+                // top decrece con i: la carta de más atrás tiene top=0, la del frente top=(n-1)*offset
+                const topOffset = (n - 1 - i) * IDLE_OFFSET;
+                return (
+                  <div
+                    key={game.id}
+                    style={{
+                      position: 'absolute',
+                      top: `${topOffset}px`,
+                      left: 0,
+                      zIndex: n - i, // i=0 frente → zIndex=n (máximo)
+                    }}
+                  >
+                    <GameCard game={game} width={IDLE_W} height={IDLE_H} variant="default" />
+                  </div>
+                );
+              })}
             </div>
             {games.length > 1 && (
               <p class="text-xs text-[var(--color-text-muted)]">
@@ -87,7 +105,10 @@ export default function ShuffleArea() {
 
   // Estados shuffling / result
   return (
-    <div class="relative w-56 h-80 flex items-center justify-center">
+    <div
+      class="relative flex items-center justify-center"
+      style={{ width: '320px', height: '200px' }}
+    >
       {/* Glow de fondo */}
       {phase === 'shuffling' && (
         <div class="absolute inset-0 rounded-2xl bg-[var(--color-primary-soft)]/10 blur-xl animate-pulse" />
@@ -100,34 +121,16 @@ export default function ShuffleArea() {
             position: 'absolute',
             inset: 0,
             display: 'flex',
-            flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
           }}
         >
-          <div
-            class="w-48 h-64 rounded-xl overflow-hidden border border-[var(--color-border-subtle)] shadow-lg"
-            style={
-              phase === 'result'
-                ? {
-                    boxShadow:
-                      '0 0 40px color-mix(in srgb, var(--color-primary-soft) 25%, transparent)',
-                  }
-                : {}
-            }
-          >
-            {displayGame.coverUrl ? (
-              <img
-                src={displayGame.coverUrl}
-                alt={displayGame.name}
-                class="w-full h-full object-cover"
-              />
-            ) : (
-              <div class="w-full h-full flex items-center justify-center bg-[var(--color-bg-elevated)]">
-                <Gamepad2 size={48} class="text-[var(--color-text-muted)]" />
-              </div>
-            )}
-          </div>
+          <GameCard
+            game={displayGame}
+            width={320}
+            height={200}
+            variant={phase === 'result' ? 'winner' : 'default'}
+          />
         </div>
       )}
     </div>
