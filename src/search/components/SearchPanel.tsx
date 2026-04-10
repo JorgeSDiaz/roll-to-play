@@ -1,5 +1,5 @@
 import { useState } from 'preact/hooks';
-import { Search, Key, ExternalLink, Loader2 } from 'lucide-preact';
+import { Search, X, Key, ExternalLink, Loader2 } from 'lucide-preact';
 import { hasApiKeySignal } from '../../api-key/api-key.signals';
 import {
   searchQuerySignal,
@@ -39,6 +39,10 @@ export default function SearchPanel() {
 
   function handleKeyDown(e: KeyboardEvent) {
     if (e.key === 'Enter') handleSearch();
+  }
+
+  function handleClear() {
+    setInputValue('');
   }
 
   const hasKey = hasApiKeySignal.value;
@@ -91,8 +95,17 @@ export default function SearchPanel() {
             onKeyDown={handleKeyDown}
             placeholder="Buscar juego..."
             disabled={!hasKey || isSearching}
-            class="w-full h-9 pl-8 pr-3 rounded-md text-sm bg-[var(--color-bg-deep)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] border border-[var(--color-border-default)] focus:outline-none focus:border-2 focus:border-[var(--color-border-focus)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-150"
+            class="w-full h-9 pl-8 pr-8 rounded-md text-sm bg-[var(--color-bg-deep)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] border border-[var(--color-border-default)] focus:outline-none focus:border-2 focus:border-[var(--color-border-focus)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-150"
           />
+          {inputValue && (
+            <button
+              onClick={handleClear}
+              class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors duration-150 cursor-pointer"
+              aria-label="Limpiar búsqueda"
+            >
+              <X size={14} />
+            </button>
+          )}
         </div>
         <button
           onClick={handleSearch}
