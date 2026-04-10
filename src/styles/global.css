@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* Fuente */
+  --font-family-sans: 'Inter', system-ui, sans-serif;
+
+  /* Superficies — Dark Mode (default) */
+  --color-bg-deep:     #0B0B14;
+  --color-bg-base:     #12121E;
+  --color-bg-elevated: #1A1A2E;
+  --color-bg-overlay:  #22223A;
+  --color-bg-muted:    #2A2A44;
+
+  /* Acentos funcionales */
+  --color-primary:   #C4B5FD;
+  --color-secondary: #A7F3D0;
+  --color-tertiary:  #FECACA;
+  --color-accent:    #DDD6FE;
+
+  /* Acentos decorativos */
+  --color-primary-soft:   #B8A9E8;
+  --color-secondary-soft: #8EDEC4;
+  --color-tertiary-soft:  #F5A9A9;
+
+  /* Texto */
+  --color-text-primary:   #F1F5F9;
+  --color-text-secondary: #CBD5E1;
+  --color-text-muted:     #64748B;
+  --color-text-disabled:  #475569;
+
+  /* Bordes */
+  --color-border-subtle:  #1E1E32;
+  --color-border-default: #2A2A44;
+  --color-border-focus:   #C4B5FD;
+
+  /* Destructivo */
+  --color-destructive:    #EF4444;
+  --color-on-destructive: #FFFFFF;
+}
+
+/* Light mode tokens */
+[data-theme="light"] {
+  --color-bg-deep:        #F8FAFC;
+  --color-bg-base:        #FFFFFF;
+  --color-bg-elevated:    #F1F5F9;
+  --color-bg-overlay:     #E2E8F0;
+  --color-bg-muted:       #CBD5E1;
+  --color-primary:        #7C3AED;
+  --color-secondary:      #059669;
+  --color-tertiary:       #DC2626;
+  --color-accent:         #6D28D9;
+  --color-primary-soft:   #EDE9FE;
+  --color-secondary-soft: #D1FAE5;
+  --color-tertiary-soft:  #FEE2E2;
+  --color-text-primary:   #0F172A;
+  --color-text-secondary: #334155;
+  --color-text-muted:     #64748B;
+  --color-text-disabled:  #94A3B8;
+  --color-border-subtle:  #E2E8F0;
+  --color-border-default: #CBD5E1;
+  --color-border-focus:   #7C3AED;
+}
+
+/* Base styles */
+html {
+  font-family: var(--font-family-sans);
+  background-color: var(--color-bg-deep);
+  color: var(--color-text-primary);
+}
+
+/* Animación shuffle */
+.shuffle-card {
+  will-change: transform, opacity;
+  transition:
+    transform var(--shuffle-speed, 100ms) ease-out,
+    opacity   var(--shuffle-speed, 100ms) ease-out;
+}
+
+.shuffle-card--entering {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+.shuffle-card--active {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.shuffle-card--exiting {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.result-card {
+  animation: reveal 300ms ease-out forwards;
+}
+
+@keyframes reveal {
+  from { transform: scale(0.85); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+
+/* Accesibilidad: reducir movimiento */
+@media (prefers-reduced-motion: reduce) {
+  .shuffle-card {
+    transition-duration: 0ms;
+    transform: none !important;
+  }
+  .shuffle-card--entering { opacity: 0; }
+  .shuffle-card--active   { opacity: 1; }
+  .result-card            { animation-duration: 1ms; }
+}

@@ -1,0 +1,48 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+---
+
+<AppLayout title="RollToPlay">
+  <header class="h-14 flex items-center justify-between px-6 border-b border-[var(--color-border-subtle)] sticky top-0 z-10 bg-[var(--color-bg-base)]">
+    <span class="text-2xl font-bold tracking-tight text-[var(--color-text-primary)]">
+      RollToPlay
+    </span>
+    <div class="flex items-center gap-2">
+      <!-- ApiKeyInput island — próximamente -->
+    </div>
+  </header>
+
+  <div class="flex min-h-[calc(100dvh-3.5rem)]">
+    <!-- Sidebar -->
+    <aside class="w-80 shrink-0 border-r border-[var(--color-border-subtle)] bg-[var(--color-bg-base)] overflow-y-auto hidden md:block">
+      <div class="p-6 text-[var(--color-text-muted)] text-sm">
+        <!-- Sidebar islands — próximamente -->
+        Búsqueda y lista de juegos
+      </div>
+    </aside>
+
+    <!-- Área principal -->
+    <main class="flex-1 flex flex-col items-center justify-center p-8 gap-12">
+      <div class="text-center space-y-4 max-w-md">
+        <p class="text-[var(--color-text-secondary)] text-lg">
+          Agrega juegos desde la búsqueda y presiona
+          <strong class="text-[var(--color-text-primary)]">Roll!</strong>
+          para elegir uno al azar.
+        </p>
+      </div>
+
+      <!-- ShuffleArea island — próximamente -->
+      <div class="w-64 h-80 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)] flex items-center justify-center">
+        <span class="text-[var(--color-text-muted)] text-sm">Shuffle area</span>
+      </div>
+
+      <!-- RollButton island — próximamente -->
+      <button
+        disabled
+        class="flex items-center gap-2 px-12 py-4 rounded-xl text-xl font-bold opacity-40 cursor-not-allowed bg-[var(--color-primary)] text-[var(--color-bg-deep)] min-w-[200px] justify-center"
+      >
+        Roll!
+      </button>
+    </main>
+  </div>
+</AppLayout>

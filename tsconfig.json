@@ -1,0 +1,17 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist"],
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
+    "baseUrl": ".",
+    "paths": {
+      "@shared/*": ["src/shared/*"],
+      "@search/*": ["src/search/*"],
+      "@game-list/*": ["src/game-list/*"],
+      "@shuffle/*": ["src/shuffle/*"],
+      "@api-key/*": ["src/api-key/*"]
+    }
+  }
+}
